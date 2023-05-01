@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+    <title>cart</title>
+</head>
+<body>
+  <form enctype="multipart/form-data" action="#" th:action="@{/temps/update}"
+        th:object="${product}" method="post">
+    <div class="second" sec:authorize="hasRole('ROLE_ADMIN')">
+    <img class="show-case" th:src="@{${product.pictureLocation}}">
+    <input type="hidden" th:field="*{id}">
+    <input type="hidden" th:field="*{pictureLocation}">
+    <input type="file" name="file" multiple="multiple">
+    <br>
+    <input type="text" th:field="*{productName}">
+    <br>
+    <input type="text" th:field="*{price}">
+    <br>
+    <input type="text" th:field="*{description}">
+    <br>
+    <button type="submit" value="Upload">Save</button>
+    </div>
+  </form>
+
+    <div class="third" th:object="${product}">
+      <div class="what">
+    <img class="show-case" th:src="@{*{pictureLocation}}" alt="product">
+      </div>
+      <div>
+      <p class="tu" th:text="*{productName} + ' ' + *{description}">
+      </div>
+    </div>
+      <br>
+      <hr>
+      <a th:href="@{/temps/list}">Back to List</a>
+</body>
+</html>

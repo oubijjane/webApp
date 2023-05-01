@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+    <title>Welcome</title>
+</head>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+<body>
+
+    <h1>Product Cataloged</h1>
+    <hr>
+    <div>
+    <figure class="item" th:each="tempProduct : ${products}" >
+        <img th:src="@{${tempProduct.pictureLocation}}">
+        <a th:href="@{/temps/cart(id=${tempProduct.id})}">
+        <figcaption class="caption" th:utext="${tempProduct.descrName}"/>
+        </a>
+    </figure>
+    </div>
+</body>
+</html>
