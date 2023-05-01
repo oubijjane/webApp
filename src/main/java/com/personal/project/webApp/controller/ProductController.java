@@ -54,4 +54,11 @@ public class ProductController {
         productService.save(product);
         return "redirect:/temps/list";
     }
+    @PostMapping("/add-to-cart")
+    public String addToCart(@ModelAttribute("product") Product product, @RequestParam(value = "quantity") int num){
+        int quantity = product.getQuantity() - num;
+        product.setQuantity(quantity);
+        productService.save(product);
+        return "redirect:/temps/list";
+    }
 }

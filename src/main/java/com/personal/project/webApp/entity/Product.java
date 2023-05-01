@@ -27,6 +27,9 @@ public class Product {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "quantity")
+    private int quantity;
+
     @ManyToMany(mappedBy = "products")
     private List<Costumer> costumers;
 
@@ -87,6 +90,14 @@ public class Product {
     public String descrName() {
         System.out.println(getProductName() + ":\n" + getDescription());
         return getProductName() + "<br/>" + getDescription();
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     @Override

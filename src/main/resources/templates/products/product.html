@@ -20,16 +20,25 @@
     <br>
     <input type="text" th:field="*{description}">
     <br>
+    <input type="number" th:field="*{quantity}">
+    <br>
     <button type="submit" value="Upload">Save</button>
     </div>
   </form>
 
-    <div class="third" th:object="${product}">
+    <div class="third" th:object="${product}" th:action="@{/temps/add-to-cart}"
+                        method="POST">
       <div class="what">
     <img class="show-case" th:src="@{*{pictureLocation}}" alt="product">
       </div>
       <div>
-      <p class="tu" th:text="*{productName} + ' ' + *{description}">
+      <p class="tu" th:text="*{productName} + ' ' + *{description}"/>
+        <label>quantity:
+        <input type="number" min="0" th:max="*{quantity}" name="quantity" required/>
+        </label>
+        <br>
+        <br>
+        <button type="submit">Add to cart</button>
       </div>
     </div>
       <br>

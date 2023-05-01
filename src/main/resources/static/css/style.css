@@ -50,13 +50,18 @@ img {
     height: 100%;
 }
 .third{
-        display: grid;
-        justify-content: start;
-        grid-template-columns: 1fr 1fr;
-        align-items: flex-start;
+     display: grid;
+     justify-content: start;
+     grid-template-columns: 1fr 1fr;
+     align-items: flex-start;
+     padding: 10px;
+     border-radius: 10px;
+     grid-column-gap: 10px;
+     background-color: rgba(0, 0, 155, 0.2);
+     border: 2px solid;
 }
 
-*/.tu {
+/*.tu {
     position: relative;
     left: 25%;
     bottom: 94%;
@@ -67,7 +72,7 @@ img {
 }*/
 
 .what{
-    border: 2px solid black;
+    border-right: 2px solid black;
 }
 input {
     position: relative;
