@@ -40,10 +40,11 @@ public class Product {
 
 
 
-    public Product(String productName, float price, String pictureLocation, String description) {
+    public Product(String productName, float price, String pictureLocation, String description,int quantity) {
         this.productName = productName;
         this.price = price;
         this.pictureLocation = pictureLocation;
+        this.quantity = quantity;
         this.description = description;
     }
 

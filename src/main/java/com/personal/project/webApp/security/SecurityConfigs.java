@@ -42,7 +42,7 @@ public class SecurityConfigs {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(config ->
                 config
-                        .requestMatchers(HttpMethod.GET,"/temps/list","/images/**","/css/**","/temps/cart/**","/**")
+                        .requestMatchers("/temps/list","/images/**","/css/**","/temps/cart/**","/**","/temps/add-to-cart")
                         .permitAll()
                         .requestMatchers(HttpMethod.GET,"/temps/cart/**").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.POST,"/temps/update").hasRole("ADMIN")

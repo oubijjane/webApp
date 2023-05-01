@@ -42,7 +42,10 @@ public class ProductController {
         return "products/product";
     }
     @PostMapping("/update")
-    public String update(@ModelAttribute("product") Product product,@RequestParam(value = "file", required = false) MultipartFile file) {
+    public String update(@ModelAttribute("product") Product product,@RequestParam(value = "file", required = false) MultipartFile file,@RequestParam int quant) {
+        System.out.println("/->>>>>>>" + quant);
+        int quantity = product.getQuantity() - quant;
+        product.setQuantity(quantity);
         if(file.isEmpty()){
             productService.save(product);
             return "redirect:/temps/list";
@@ -55,9 +58,12 @@ public class ProductController {
         return "redirect:/temps/list";
     }
     @PostMapping("/add-to-cart")
-    public String addToCart(@ModelAttribute("product") Product product, @RequestParam(value = "quantity") int num){
-        int quantity = product.getQuantity() - num;
+    public String addToCart(@ModelAttribute("product") Product product, @RequestParam int quant){
+        System.out.println("/->>>>////>>" + quant);
+        int quantity = product.getQuantity() - quant;
+        System.out.println(quantity);
         product.setQuantity(quantity);
+        System.out.println(product.getQuantity());
         productService.save(product);
         return "redirect:/temps/list";
     }
