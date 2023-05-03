@@ -1,4 +1,4 @@
-package com.personal.project.webApp.dao.rest;
+package com.personal.project.webApp.rest;
 
 import com.personal.project.webApp.entity.Product;
 import com.personal.project.webApp.service.ProductService;

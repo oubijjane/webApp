@@ -2,10 +2,11 @@ package com.personal.project.webApp.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Costumer {
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,17 +26,19 @@ public class Costumer {
     @Column(name="email")
     private String email;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY,
+                cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                        CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
             name = "cart",
-            joinColumns = @JoinColumn(name = "costumer_id"),
+            joinColumns = @JoinColumn(name = "customer_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
 
-    public Costumer() {
+    public Customer() {
     }
 
-    public Costumer(String firstName, String lastName, String address, String email) {
+    public Customer(String firstName, String lastName, String address, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -87,6 +90,9 @@ public class Costumer {
     }
 
     public void setProducts(List<Product> products) {
+        if(products == null) {
+            products = new ArrayList<>();
+        }
         this.products = products;
     }
 

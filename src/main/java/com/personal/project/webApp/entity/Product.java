@@ -1,8 +1,6 @@
 package com.personal.project.webApp.entity;
 
-import com.personal.project.webApp.storage.FileSystemStorageService;
 import jakarta.persistence.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -31,7 +29,7 @@ public class Product {
     private int quantity;
 
     @ManyToMany(mappedBy = "products")
-    private List<Costumer> costumers;
+    private List<Customer> customers;
 
 
     public Product() {

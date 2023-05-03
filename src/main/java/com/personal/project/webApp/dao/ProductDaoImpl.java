@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,14 +20,16 @@ public class ProductDaoImpl implements ProductDAO {
     }
 
     @Override
+
     public List<Product> findAll() {
         TypedQuery<Product> products = entityManager.createQuery("FROM Product", Product.class);
         return products.getResultList();
     }
 
     @Override
+
     public Product findById(int id) {
-        System.out.println(entityManager.find(Product.class, id));
+
         return entityManager.find(Product.class, id);
     }
 
