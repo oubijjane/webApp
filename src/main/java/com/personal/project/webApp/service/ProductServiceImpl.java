@@ -2,6 +2,7 @@ package com.personal.project.webApp.service;
 
 import com.personal.project.webApp.dao.ProductDAO;
 import com.personal.project.webApp.entity.Product;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +25,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-
+    @Transactional
     public Product findById(int id) {
+        Hibernate.initialize(productDAO.findById(id));
         return productDAO.findById(id);
     }
 

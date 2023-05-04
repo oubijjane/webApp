@@ -15,5 +15,7 @@ public interface CustomerDAO {
 
     void deleteById(int id);
 
+    void addToCart(int id, Product product);
+
     List<Product> getProducts(int id);
 }

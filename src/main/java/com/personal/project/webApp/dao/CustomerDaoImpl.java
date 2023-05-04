@@ -47,6 +47,13 @@ public class CustomerDaoImpl implements CustomerDAO{
     }
 
     @Override
+    public void addToCart(int id, Product product) {
+        Customer customer = entityManager.find(Customer.class, id);
+        customer.addToCart(product);
+        entityManager.merge(customer);
+    }
+
+    @Override
 
     public List<Product> getProducts(int id) {
         Customer customer = findById(id);

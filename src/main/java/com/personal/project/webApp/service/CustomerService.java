@@ -16,4 +16,6 @@ public interface CustomerService {
     void deleteById(int id);
 
     List<Product> getProducts(int id);
+
+    void addToCart(int id, Product product);
 }

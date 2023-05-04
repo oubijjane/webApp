@@ -27,8 +27,7 @@ public class Customer {
     private String email;
 
     @ManyToMany(fetch = FetchType.LAZY,
-                cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-                        CascadeType.DETACH, CascadeType.REFRESH})
+                cascade = CascadeType.ALL)
     @JoinTable(
             name = "cart",
             joinColumns = @JoinColumn(name = "customer_id"),
