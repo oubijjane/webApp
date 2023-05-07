@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties.class)
@@ -35,17 +36,21 @@ public class WebAppApplication {
 
 		};
 	}
+
 	@Transactional
 	private void addProductstoCart(CustomerService customerDAO, ProductService productDAO) {
 		List<Product> products = productDAO.findAll();
+		System.out.println("1///");
 		Customer customer = customerDAO.findById(1);
+		System.out.println("2///");
 		Product product = productDAO.findById(7);
+		System.out.println("3///");
 		customerDAO.addToCart(1,product);
 
 	}
 
-	private void saveCustomer(CustomerDAO customerDAO) {
-		Customer customer = new Customer("zakaria", "oubijjane", "casablanca", "oubijjane48@gmail.com");
+	private void saveCustomer(CustomerService customerDAO) {
+		Customer customer = new Customer("redouan", "oubijjane", "casablanca", "oubijjane8@gmail.com", "redouan");
 
 		customerDAO.save(customer);
 	}

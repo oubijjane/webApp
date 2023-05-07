@@ -2,20 +2,14 @@ package com.personal.project.webApp.dao;
 
 import com.personal.project.webApp.entity.Customer;
 import com.personal.project.webApp.entity.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CustomerDAO {
+public interface CustomerDAO extends JpaRepository<Customer, Integer>{
 
-    List<Customer> findAll();
+    List<Customer> findByEmail(String email);
+    //List<Product> getProducts(int id);
 
-    Customer findById(int id);
-
-    void save(Customer customer);
-
-    void deleteById(int id);
-
-    void addToCart(int id, Product product);
-
-    List<Product> getProducts(int id);
+    //void addToCart(int id, Product product);
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
@@ -28,8 +29,16 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     @Transactional
     public Customer findById(int id) {
-        Hibernate.initialize(customerDAO.findById(id));
-        return customerDAO.findById(id);
+        Optional<Customer> result = customerDAO.findById(id);
+        Customer customer = null;
+        if (result.isPresent()) {
+            customer = result.get();
+        }
+        else {
+            // we didn't find the employee
+            throw new RuntimeException("Did not find customer id - " + id);
+        }
+        return customer;
     }
 
     @Override
@@ -47,14 +56,20 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     @Transactional
     public List<Product> getProducts(int id) {
-        Hibernate.initialize(customerDAO.getProducts(id));
-        return customerDAO.getProducts(id);
+        //Hibernate.initialize(findById(id).getProducts());
+        return findById(id).getProducts();
+    }
+
+    @Override
+    public List<Customer> findByEmail(String email) {
+        return null;
     }
 
     @Override
     @Transactional
     public void addToCart(int id, Product product) {
-        Hibernate.initialize(product);
-        customerDAO.addToCart(id, product);
+       // Hibernate.initialize(product);
+        Customer customer = findById(id);
+        customer.addToCart(product);
     }
 }

@@ -26,8 +26,11 @@ public class Customer {
     @Column(name="email")
     private String email;
 
+    @Column
+    private String role;
+
     @ManyToMany(fetch = FetchType.LAZY,
-                cascade = CascadeType.ALL)
+                cascade = CascadeType.MERGE)
     @JoinTable(
             name = "cart",
             joinColumns = @JoinColumn(name = "customer_id"),
@@ -37,11 +40,13 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(String firstName, String lastName, String address, String email) {
+    public Customer(String firstName, String lastName, String address, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.email = email;
+        this.role = "CUSTOMER";
+        this.password = "{noop}"+password;
     }
 
     public int getId() {
@@ -82,6 +87,22 @@ public class Customer {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public List<Product> getProducts() {

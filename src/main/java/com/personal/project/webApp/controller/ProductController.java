@@ -1,9 +1,13 @@
 package com.personal.project.webApp.controller;
 
+import com.personal.project.webApp.entity.Customer;
 import com.personal.project.webApp.entity.Product;
 import com.personal.project.webApp.service.ProductService;
 import com.personal.project.webApp.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +40,7 @@ public class ProductController {
         return "products/list-products";
     }
     @GetMapping("/cart")
-    public String cart(@RequestParam(value = "id") int id, Model theModel) {
+    public String cart(@RequestParam(value = "id") int id, Model theModel, Model model) {
         Product product = productService.findById(id);
         theModel.addAttribute("product", product);
         return "products/product";
@@ -59,7 +63,6 @@ public class ProductController {
     }
     @PostMapping("/add-to-cart")
     public String addToCart(@ModelAttribute("product") Product product, @RequestParam int quant){
-        System.out.println("/->>>>////>>" + quant);
         int quantity = product.getQuantity() - quant;
         System.out.println(quantity);
         product.setQuantity(quantity);
