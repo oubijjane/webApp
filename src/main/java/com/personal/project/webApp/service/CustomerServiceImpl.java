@@ -56,19 +56,18 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     @Transactional
     public List<Product> getProducts(int id) {
-        //Hibernate.initialize(findById(id).getProducts());
+        Hibernate.initialize(findById(id).getProducts());
         return findById(id).getProducts();
     }
 
     @Override
     public List<Customer> findByEmail(String email) {
-        return null;
+        return customerDAO.findByEmail(email);
     }
 
     @Override
     @Transactional
     public void addToCart(int id, Product product) {
-       // Hibernate.initialize(product);
         Customer customer = findById(id);
         customer.addToCart(product);
     }

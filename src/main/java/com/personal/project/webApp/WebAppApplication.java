@@ -32,9 +32,18 @@ public class WebAppApplication {
 		return runner -> {
 
 			//saveCustomer(customerDAO);
-			addProductstoCart(customerDAO,productDAO);
+			//addProductstoCart(customerDAO,productDAO);
+			findByEmail(customerDAO);
 
 		};
+	}
+
+	private void findByEmail(CustomerService customerDAO) {
+
+
+		List<Product> productList = customerDAO.getProducts(1);
+
+		System.out.println(productList);
 	}
 
 	@Transactional
