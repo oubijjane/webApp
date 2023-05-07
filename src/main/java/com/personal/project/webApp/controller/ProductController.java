@@ -2,6 +2,7 @@ package com.personal.project.webApp.controller;
 
 import com.personal.project.webApp.entity.Customer;
 import com.personal.project.webApp.entity.Product;
+import com.personal.project.webApp.service.CustomerService;
 import com.personal.project.webApp.service.ProductService;
 import com.personal.project.webApp.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,16 @@ import java.util.List;
 public class ProductController {
 
     private ProductService productService;
+
+    private CustomerService customerService;
+
     private StorageService storageService;
 
     @Autowired
-    public ProductController(ProductService productService, StorageService storageService) {
+    public ProductController(ProductService productService, StorageService storageService, CustomerService customerService) {
         this.productService = productService;
         this.storageService = storageService;
+        this.customerService = customerService;
     }
 
     @GetMapping("/list")
@@ -67,7 +72,19 @@ public class ProductController {
         System.out.println(quantity);
         product.setQuantity(quantity);
         System.out.println(product.getQuantity());
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int theId = customer(user.getUsername()).getId();
+        customerService.addToCart(theId, product);
         productService.save(product);
         return "redirect:/temps/list";
+    }
+
+    private Customer customer(String email){
+        List<Customer> customers = customerService.findByEmail(email);
+        Customer theCustomer = null;
+        for(Customer customer: customers){
+            theCustomer =customer;
+        }
+        return theCustomer;
     }
 }
