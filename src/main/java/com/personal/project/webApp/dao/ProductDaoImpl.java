@@ -10,8 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public class ProductDaoImpl implements ProductDAO {
+public class ProductDaoImpl  {
 
+    /*
     private EntityManager entityManager;
 
     @Autowired
@@ -42,5 +43,5 @@ public class ProductDaoImpl implements ProductDAO {
     public void deleteById(int id) {
     Product product = findById(id);
     entityManager.remove(product);
-    }
+    }*/
 }

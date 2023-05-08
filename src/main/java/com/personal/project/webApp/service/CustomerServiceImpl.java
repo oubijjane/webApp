@@ -42,13 +42,11 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    @Transactional
     public void save(Customer customer) {
         customerDAO.save(customer);
     }
 
     @Override
-    @Transactional
     public void deleteById(int id) {
         customerDAO.deleteById(id);
     }
@@ -66,7 +64,6 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    @Transactional
     public void addToCart(int id, Product product) {
         Customer customer = findById(id);
         customer.addToCart(product);

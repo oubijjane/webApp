@@ -19,8 +19,8 @@ import java.security.Security;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigs {
-
-    /*@Bean
+/*
+    @Bean
     public InMemoryUserDetailsManager userDetailsManager() {
         UserDetails zakaria = User.builder()
                 .username("zakaria")
@@ -48,7 +48,7 @@ public class SecurityConfigs {
                         .requestMatchers("/temps/list","/images/**","/css/**","/temps/cart/**","/**","/temps/add-to-cart")
                         .permitAll()
                         .requestMatchers(HttpMethod.GET,"/temps/cart/**").hasRole("CUSTOMER")
-                        .requestMatchers(HttpMethod.POST,"/temps/update").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/temps/update","/temps/list","/images/**","/css/**","/temps/cart/**","/**","/temps/add-to-cart").hasRole("ADMIN")
 
         ).formLogin((form) -> form
                 .loginPage("/login")
@@ -58,7 +58,7 @@ public class SecurityConfigs {
         return httpSecurity.build();
     }
     @Bean
-    public UserDetailsManager userDetailsManager(DataSource dataSource){
+    public UserDetailsManager userDetailsManagerDataBase(DataSource dataSource){
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
 
         jdbcUserDetailsManager.setUsersByUsernameQuery(

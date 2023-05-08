@@ -33,9 +33,16 @@ public class WebAppApplication {
 
 			//saveCustomer(customerDAO);
 			//addProductstoCart(customerDAO,productDAO);
-			findByEmail(customerDAO);
+			//findByEmail(customerDAO);
+			//AddProduct(productDAO);
 
 		};
+	}
+
+	private void AddProduct(ProductService productDAO) {
+		Product product = new Product("milka", 2.2F, "/images/milka.jpg", "100g per container", 10);
+
+		productDAO.save(product);
 	}
 
 	private void findByEmail(CustomerService customerDAO) {
@@ -59,7 +66,7 @@ public class WebAppApplication {
 	}
 
 	private void saveCustomer(CustomerService customerDAO) {
-		Customer customer = new Customer("redouan", "oubijjane", "casablanca", "oubijjane8@gmail.com", "redouan");
+		Customer customer = new Customer("John", "Dao", "casablanca", "John@gmail.com", "john");
 
 		customerDAO.save(customer);
 	}
