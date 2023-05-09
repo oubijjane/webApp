@@ -74,6 +74,7 @@ public class ProductController {
         System.out.println(product.getQuantity());
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int theId = customer(user.getUsername()).getId();
+        System.out.println(customer(user.getUsername()).getRole());
         customerService.addToCart(theId, product);
         productService.save(product);
         return "redirect:/temps/list";

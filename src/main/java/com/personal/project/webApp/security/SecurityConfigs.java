@@ -57,6 +57,7 @@ public class SecurityConfigs {
         httpSecurity.httpBasic();
         return httpSecurity.build();
     }
+
     @Bean
     public UserDetailsManager userDetailsManagerDataBase(DataSource dataSource){
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
