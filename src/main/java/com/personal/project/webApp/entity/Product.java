@@ -31,6 +31,10 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     private List<Customer> customers;
 
+    @OneToMany(mappedBy = "product",
+            cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    List<OrderList> orderLists;
+
 
     public Product() {
 
@@ -97,6 +101,22 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<Customer> customers) {
+        this.customers = customers;
+    }
+
+    public List<OrderList> getOrders() {
+        return orderLists;
+    }
+
+    public void setOrders(List<OrderList> orderLists) {
+        this.orderLists = orderLists;
     }
 
     @Override

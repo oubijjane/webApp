@@ -37,6 +37,9 @@ public class Customer {
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
 
+    @OneToMany(mappedBy = "customer",
+            cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    List<OrderList> orderLists;
     public Customer() {
     }
 
@@ -118,6 +121,14 @@ public class Customer {
 
     public void addToCart(Product product){
         products.add(product);
+    }
+
+    public List<OrderList> getOrders() {
+        return orderLists;
+    }
+
+    public void setOrders(List<OrderList> orderLists) {
+        this.orderLists = orderLists;
     }
 
     @Override
