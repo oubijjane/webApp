@@ -38,7 +38,7 @@ public class Customer {
     private List<Product> products;
 
     @OneToMany(mappedBy = "customer",
-            cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+            cascade = CascadeType.MERGE)
     List<OrderList> orderLists;
     public Customer() {
     }

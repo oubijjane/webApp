@@ -4,8 +4,10 @@ package com.personal.project.webApp;
 import com.personal.project.webApp.dao.CustomerDAO;
 import com.personal.project.webApp.dao.ProductDAO;
 import com.personal.project.webApp.entity.Customer;
+import com.personal.project.webApp.entity.OrderList;
 import com.personal.project.webApp.entity.Product;
 import com.personal.project.webApp.service.CustomerService;
+import com.personal.project.webApp.service.OrderListService;
 import com.personal.project.webApp.service.ProductService;
 import com.personal.project.webApp.storage.StorageProperties;
 import com.personal.project.webApp.storage.StorageService;
@@ -28,15 +30,26 @@ public class WebAppApplication {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(CustomerService customerDAO, ProductService productDAO) {
+	public CommandLineRunner commandLineRunner(CustomerService customerDAO, ProductService productDAO, OrderListService orderListService) {
 		return runner -> {
 
 			//saveCustomer(customerDAO);
 			//addProductstoCart(customerDAO,productDAO);
 			//findByEmail(customerDAO);
 			//AddProduct(productDAO);
+			//addOrder(customerDAO, productDAO, orderListService);
 
 		};
+	}
+
+	private void addOrder(CustomerService customerDAO, ProductService productDAO, OrderListService orderListService) {
+		Customer customer = customerDAO.findById(1);
+		System.out.println(customer);
+		Product product = productDAO.findById(4);
+		System.out.println(product);
+		OrderList orderList = new OrderList(4,customer, product);
+
+		orderListService.save(orderList);
 	}
 
 	private void AddProduct(ProductService productDAO) {

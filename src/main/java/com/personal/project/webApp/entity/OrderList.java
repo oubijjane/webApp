@@ -11,13 +11,11 @@ public class OrderList {
     @Column(name = "quantity")
     private int quantity;
 
-    @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(cascade= CascadeType.MERGE)
     @JoinColumn(name="customer_id")
     private Customer customer;
 
-    @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(cascade= CascadeType.MERGE)
     @JoinColumn(name="product_id")
     private Product product;
 
