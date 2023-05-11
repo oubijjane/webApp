@@ -2,6 +2,7 @@ package com.personal.project.webApp.service;
 
 import com.personal.project.webApp.dao.CustomerDAO;
 import com.personal.project.webApp.entity.Customer;
+import com.personal.project.webApp.entity.OrderList;
 import com.personal.project.webApp.entity.Product;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,5 +68,11 @@ public class CustomerServiceImpl implements CustomerService{
     public void addToCart(int id, Product product) {
         Customer customer = findById(id);
         customer.addToCart(product);
+    }
+    @Override
+    @Transactional
+    public List<OrderList> getOrders(int id) {
+        Hibernate.initialize(findById(id).getOrders());
+        return findById(id).getOrders();
     }
 }

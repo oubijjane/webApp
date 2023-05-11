@@ -1,6 +1,7 @@
 package com.personal.project.webApp.service;
 
 import com.personal.project.webApp.entity.Customer;
+import com.personal.project.webApp.entity.OrderList;
 import com.personal.project.webApp.entity.Product;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public interface CustomerService {
     void deleteById(int id);
 
     List<Product> getProducts(int id);
+
+    List<OrderList> getOrders(int id);
 
     List<Customer> findByEmail(String email);
 

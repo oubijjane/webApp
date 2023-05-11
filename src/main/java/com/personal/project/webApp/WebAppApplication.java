@@ -38,8 +38,17 @@ public class WebAppApplication {
 			//findByEmail(customerDAO);
 			//AddProduct(productDAO);
 			//addOrder(customerDAO, productDAO, orderListService);
+			getCustumerProduct(customerDAO, productDAO, orderListService);
 
 		};
+	}
+
+	private void getCustumerProduct(CustomerService customerDAO, ProductService productDAO, OrderListService orderListService) {
+		Customer customer = customerDAO.findById(1);
+		System.out.println(customer);
+		for(OrderList orderList: customerDAO.getOrders(1)) {
+			System.out.println(orderList.getProduct());
+		}
 	}
 
 	private void addOrder(CustomerService customerDAO, ProductService productDAO, OrderListService orderListService) {
