@@ -48,7 +48,7 @@ public class SecurityConfigs {
                         .requestMatchers("/temps/list","/images/**","/css/**","/temps/cart/**","/**","/temps/add-to-cart")
                         .permitAll()
                         .requestMatchers(HttpMethod.GET,"/temps/cart/**").hasRole("CUSTOMER")
-                        .requestMatchers(HttpMethod.POST,"/temps/update","/temps/list","/images/**","/css/**","/temps/cart/**","/**","/temps/add-to-cart").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/temps/update","/temps/list","/images/**","/css/**","/temps/cart/**","/**","/temps/add-to-cart","temps/order").hasRole("ADMIN")
 
         ).formLogin((form) -> form
                 .loginPage("/login")

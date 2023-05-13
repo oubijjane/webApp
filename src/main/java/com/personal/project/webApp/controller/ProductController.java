@@ -1,8 +1,10 @@
 package com.personal.project.webApp.controller;
 
 import com.personal.project.webApp.entity.Customer;
+import com.personal.project.webApp.entity.OrderList;
 import com.personal.project.webApp.entity.Product;
 import com.personal.project.webApp.service.CustomerService;
+import com.personal.project.webApp.service.OrderListService;
 import com.personal.project.webApp.service.ProductService;
 import com.personal.project.webApp.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ import java.util.List;
 @RequestMapping("/temps")
 public class ProductController {
 
+    private OrderListService orderListService;
+
     private ProductService productService;
 
     private CustomerService customerService;
@@ -30,10 +34,15 @@ public class ProductController {
     private StorageService storageService;
 
     @Autowired
-    public ProductController(ProductService productService, StorageService storageService, CustomerService customerService) {
+    public ProductController(
+            ProductService productService,
+            StorageService storageService,
+            CustomerService customerService,
+            OrderListService orderListService) {
         this.productService = productService;
         this.storageService = storageService;
         this.customerService = customerService;
+        this.orderListService = orderListService;
     }
 
     @GetMapping("/list")
@@ -49,6 +58,20 @@ public class ProductController {
         Product product = productService.findById(id);
         theModel.addAttribute("product", product);
         return "products/product";
+    }
+    @GetMapping("/order")
+    public String order(Model theModel, Model model) {
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int theId = customerService.FindCustomerByEmail(user.getUsername()).getId();
+        List<OrderList> ordersList = customerService.getOrders(theId);
+        double sum = 0;
+        for(OrderList orderList : ordersList){
+            sum = sum +(orderList.getQuantity() * orderList.getProduct().getPrice());
+        }
+        sum = (double) (Math.round(sum*100.0)/100.0);
+        model.addAttribute("sum", sum);
+        theModel.addAttribute("ordersList", ordersList);
+        return "products/order-list";
     }
     @PostMapping("/update")
     public String update(@ModelAttribute("product") Product product,@RequestParam(value = "file", required = false) MultipartFile file,@RequestParam int quant) {
@@ -69,23 +92,14 @@ public class ProductController {
     @PostMapping("/add-to-cart")
     public String addToCart(@ModelAttribute("product") Product product, @RequestParam int quant){
         int quantity = product.getQuantity() - quant;
-        System.out.println(quantity);
         product.setQuantity(quantity);
-        System.out.println(product.getQuantity());
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int theId = customer(user.getUsername()).getId();
-        System.out.println(customer(user.getUsername()).getRole());
+        int theId = customerService.FindCustomerByEmail(user.getUsername()).getId();
+        OrderList orderList = new OrderList(quant,customerService.FindCustomerByEmail(user.getUsername()), product);
         customerService.addToCart(theId, product);
         productService.save(product);
+        orderListService.save(orderList);
         return "redirect:/temps/list";
     }
 
-    private Customer customer(String email){
-        List<Customer> customers = customerService.findByEmail(email);
-        Customer theCustomer = null;
-        for(Customer customer: customers){
-            theCustomer =customer;
-        }
-        return theCustomer;
-    }
 }

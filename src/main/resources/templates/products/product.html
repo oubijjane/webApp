@@ -36,6 +36,7 @@
       </div>
       <div>
         <p class="tu" th:text="*{productName} + ' ' + *{description}"/>
+        <p class="tu" th:text=" 'price: ' + *{price}"/>
         <input type="hidden" th:field="*{id}">
         <input type="hidden" th:field="*{pictureLocation}">
         <br>

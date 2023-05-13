@@ -11,6 +11,7 @@ public class OrderList {
     @Column(name = "quantity")
     private int quantity;
 
+
     @ManyToOne(cascade= CascadeType.MERGE)
     @JoinColumn(name="customer_id")
     private Customer customer;
@@ -55,6 +56,13 @@ public class OrderList {
 
     public Product getProduct() {
         return product;
+    }
+
+    public double getSum(){
+        double sum = product.getPrice() * quantity;
+        sum = (double) (Math.round(sum*100.0)/100.0);
+
+        return sum;
     }
 
     public void setProduct(Product product) {

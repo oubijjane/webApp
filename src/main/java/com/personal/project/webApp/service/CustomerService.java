@@ -24,4 +24,6 @@ public interface CustomerService {
     List<Customer> findByEmail(String email);
 
     void addToCart(int id, Product product);
+
+   Customer FindCustomerByEmail(String email);
 }

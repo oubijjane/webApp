@@ -1,6 +1,7 @@
 package com.personal.project.webApp.service;
 
 import com.personal.project.webApp.dao.CustomerDAO;
+import com.personal.project.webApp.dao.OrderListDAO;
 import com.personal.project.webApp.entity.Customer;
 import com.personal.project.webApp.entity.OrderList;
 import com.personal.project.webApp.entity.Product;
@@ -14,6 +15,8 @@ import java.util.Optional;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
+
+
 
     private CustomerDAO customerDAO;
 
@@ -69,10 +72,22 @@ public class CustomerServiceImpl implements CustomerService{
         Customer customer = findById(id);
         customer.addToCart(product);
     }
+
+    @Override
+    public Customer FindCustomerByEmail(String email) {
+        List<Customer> customers = customerDAO.findByEmail(email);
+        Customer theCustomer = null;
+        for(Customer customer: customers){
+            theCustomer =customer;
+        }
+        return theCustomer;
+    }
+
     @Override
     @Transactional
     public List<OrderList> getOrders(int id) {
         Hibernate.initialize(findById(id).getOrders());
         return findById(id).getOrders();
     }
+
 }

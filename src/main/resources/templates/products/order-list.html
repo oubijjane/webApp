@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+    <title>Welcome</title>
+</head>
+<body>
+<div class="test">
+  <div  th:each="tempOrderList : ${ordersList}">
+      <div class="third">
+      <img th:src="@{${tempOrderList.getProduct.pictureLocation}}">
+          <div>
+      <a th:utext="${tempOrderList.getProduct.descrName}"/>
+      <p th:text="'quantity:  '+${tempOrderList.quantity}"/>
+      <p th:text="'total:  '+${tempOrderList.getSum} +' dh'"/>
+      </div>
+  </div>
+  </div>
+</div>
+</body>
+</html>

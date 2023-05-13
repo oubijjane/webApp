@@ -60,16 +60,13 @@ img {
      background-color: rgba(0, 0, 155, 0.2);
      border: 2px solid;
 }
-
-/*.tu {
-    position: relative;
-    left: 25%;
-    bottom: 94%;
+.test{
+  display: grid;
+  grid-template-columns: auto;
+  padding: 10px;
 }
-.divider {
-  border-bottom: 1px solid #888989;
-  margin: 2px 0;
-}*/
+
+
 
 .what{
     border-right: 2px solid black;
