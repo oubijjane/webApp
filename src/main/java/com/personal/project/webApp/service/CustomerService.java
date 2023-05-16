@@ -17,13 +17,11 @@ public interface CustomerService {
 
     void deleteById(int id);
 
-    List<Product> getProducts(int id);
 
     List<OrderList> getOrders(int id);
 
     List<Customer> findByEmail(String email);
 
-    void addToCart(int id, Product product);
 
    Customer FindCustomerByEmail(String email);
 }

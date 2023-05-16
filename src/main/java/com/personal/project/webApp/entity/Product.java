@@ -28,11 +28,10 @@ public class Product {
     @Column(name = "quantity")
     private int quantity;
 
-    @ManyToMany(mappedBy = "products")
-    private List<Customer> customers;
+
 
     @OneToMany(mappedBy = "product",
-            cascade =  CascadeType.MERGE)
+            cascade =  {CascadeType.MERGE, CascadeType.REMOVE})
     List<OrderList> orderLists;
 
 
@@ -103,13 +102,6 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public List<Customer> getCustomers() {
-        return customers;
-    }
-
-    public void setCustomers(List<Customer> customers) {
-        this.customers = customers;
-    }
 
     public List<OrderList> getOrders() {
         return orderLists;

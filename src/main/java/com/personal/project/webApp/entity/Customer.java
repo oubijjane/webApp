@@ -1,6 +1,7 @@
 package com.personal.project.webApp.entity;
 
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,17 +30,11 @@ public class Customer {
     @Column
     private String role;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-                cascade = CascadeType.MERGE)
-    @JoinTable(
-            name = "cart",
-            joinColumns = @JoinColumn(name = "customer_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products;
 
     @OneToMany(mappedBy = "customer",
-            cascade = CascadeType.MERGE)
+            cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     List<OrderList> orderLists;
+
     public Customer() {
     }
 
@@ -49,7 +44,7 @@ public class Customer {
         this.address = address;
         this.email = email;
         this.role = "CUSTOMER";
-        this.password = "{noop}"+password;
+        this.password = "{bcrypt}"+password;
     }
 
     public int getId() {
@@ -97,7 +92,7 @@ public class Customer {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = "{bcrypt}" + password;
     }
 
     public String getRole() {
@@ -108,20 +103,6 @@ public class Customer {
         this.role = "ROLE_" + role;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        if(products == null) {
-            products = new ArrayList<>();
-        }
-        this.products = products;
-    }
-
-    public void addToCart(Product product){
-        products.add(product);
-    }
 
     public List<OrderList> getOrders() {
         return orderLists;

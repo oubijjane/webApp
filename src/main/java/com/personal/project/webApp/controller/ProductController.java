@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,16 +34,20 @@ public class ProductController {
 
     private StorageService storageService;
 
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
     public ProductController(
             ProductService productService,
             StorageService storageService,
             CustomerService customerService,
-            OrderListService orderListService) {
+            OrderListService orderListService,
+            PasswordEncoder passwordEncoder) {
         this.productService = productService;
         this.storageService = storageService;
         this.customerService = customerService;
         this.orderListService = orderListService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/list")
@@ -54,24 +59,25 @@ public class ProductController {
         return "products/list-products";
     }
     @GetMapping("/cart")
-    public String cart(@RequestParam(value = "id") int id, Model theModel, Model model) {
+    public String cart(@RequestParam(value = "id") int id, Model theModel) {
         Product product = productService.findById(id);
         theModel.addAttribute("product", product);
         return "products/product";
     }
-    @GetMapping("/order")
-    public String order(Model theModel, Model model) {
+    @GetMapping("/shopping-list")
+    public String order(Model theModel) {
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int theId = customerService.FindCustomerByEmail(user.getUsername()).getId();
         List<OrderList> ordersList = customerService.getOrders(theId);
-        double sum = 0;
-        for(OrderList orderList : ordersList){
-            sum = sum +(orderList.getQuantity() * orderList.getProduct().getPrice());
-        }
-        sum = (double) (Math.round(sum*100.0)/100.0);
-        model.addAttribute("sum", sum);
         theModel.addAttribute("ordersList", ordersList);
-        return "products/order-list";
+        return "products/shopping-list";
+    }
+
+    @GetMapping("/add-product")
+    public String addProduct(Model model) {
+        Product product = new Product();
+        model.addAttribute("product", product);
+        return "products/add-form";
     }
     @PostMapping("/update")
     public String update(@ModelAttribute("product") Product product,@RequestParam(value = "file", required = false) MultipartFile file,@RequestParam int quant) {
@@ -89,6 +95,18 @@ public class ProductController {
         productService.save(product);
         return "redirect:/temps/list";
     }
+    @PostMapping("/add")
+    public String add(@ModelAttribute("product") Product product) {
+
+        productService.save(product);
+        return "redirect:/temps/list";
+    }
+
+    @PostMapping("/delete-product")
+    public String deleteProduct(@ModelAttribute("product") Product product) {
+        productService.deleteById(product.getId());
+        return "redirect:/temps/list";
+    }
     @PostMapping("/add-to-cart")
     public String addToCart(@ModelAttribute("product") Product product, @RequestParam int quant){
         int quantity = product.getQuantity() - quant;
@@ -96,9 +114,22 @@ public class ProductController {
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int theId = customerService.FindCustomerByEmail(user.getUsername()).getId();
         OrderList orderList = new OrderList(quant,customerService.FindCustomerByEmail(user.getUsername()), product);
-        customerService.addToCart(theId, product);
         productService.save(product);
         orderListService.save(orderList);
+        return "redirect:/temps/list";
+    }
+    @GetMapping("/add-account")
+    public String addAccount(Model model) {
+        Customer customer = new Customer();
+
+        model.addAttribute("customer", customer);
+        return "products/add-account";
+    }
+
+    @PostMapping("/add-account")
+    public String addCustomer(@ModelAttribute("customer") Customer customer, @RequestParam String password) {
+        customer.setPassword(passwordEncoder.encode(password));
+        customerService.save(customer);
         return "redirect:/temps/list";
     }
 

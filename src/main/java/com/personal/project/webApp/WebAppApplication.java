@@ -16,6 +16,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -30,68 +32,7 @@ public class WebAppApplication {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(CustomerService customerDAO, ProductService productDAO, OrderListService orderListService) {
-		return runner -> {
-
-			//saveCustomer(customerDAO);
-			//addProductstoCart(customerDAO,productDAO);
-			//findByEmail(customerDAO);
-			//AddProduct(productDAO);
-			//addOrder(customerDAO, productDAO, orderListService);
-			getCustumerProduct(customerDAO, productDAO, orderListService);
-
-		};
+	public PasswordEncoder encoder() {
+		return new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2B);
 	}
-
-	private void getCustumerProduct(CustomerService customerDAO, ProductService productDAO, OrderListService orderListService) {
-		Customer customer = customerDAO.findById(1);
-		System.out.println(customer);
-		for(OrderList orderList: customerDAO.getOrders(1)) {
-			System.out.println(orderList.getProduct());
-		}
-	}
-
-	private void addOrder(CustomerService customerDAO, ProductService productDAO, OrderListService orderListService) {
-		Customer customer = customerDAO.findById(1);
-		System.out.println(customer);
-		Product product = productDAO.findById(4);
-		System.out.println(product);
-		OrderList orderList = new OrderList(4,customer, product);
-
-		orderListService.save(orderList);
-	}
-
-	private void AddProduct(ProductService productDAO) {
-		Product product = new Product("milka", 2.2F, "/images/milka.jpg", "100g per container", 10);
-
-		productDAO.save(product);
-	}
-
-	private void findByEmail(CustomerService customerDAO) {
-
-
-		List<Product> productList = customerDAO.getProducts(1);
-
-		System.out.println(productList);
-	}
-
-	@Transactional
-	private void addProductstoCart(CustomerService customerDAO, ProductService productDAO) {
-		List<Product> products = productDAO.findAll();
-		System.out.println("1///");
-		Customer customer = customerDAO.findById(1);
-		System.out.println("2///");
-		Product product = productDAO.findById(7);
-		System.out.println("3///");
-		customerDAO.addToCart(1,product);
-
-	}
-
-	private void saveCustomer(CustomerService customerDAO) {
-		Customer customer = new Customer("John", "Dao", "casablanca", "John@gmail.com", "john");
-
-		customerDAO.save(customer);
-	}
-
-
 }

@@ -7,6 +7,7 @@ import com.personal.project.webApp.entity.OrderList;
 import com.personal.project.webApp.entity.Product;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,8 +16,6 @@ import java.util.Optional;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
-
-
 
     private CustomerDAO customerDAO;
 
@@ -55,23 +54,14 @@ public class CustomerServiceImpl implements CustomerService{
         customerDAO.deleteById(id);
     }
 
-    @Override
-    @Transactional
-    public List<Product> getProducts(int id) {
-        Hibernate.initialize(findById(id).getProducts());
-        return findById(id).getProducts();
-    }
+
 
     @Override
     public List<Customer> findByEmail(String email) {
         return customerDAO.findByEmail(email);
     }
 
-    @Override
-    public void addToCart(int id, Product product) {
-        Customer customer = findById(id);
-        customer.addToCart(product);
-    }
+
 
     @Override
     public Customer FindCustomerByEmail(String email) {

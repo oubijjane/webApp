@@ -3,22 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Welcome</title>
 </head>
 <form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
+    <input type="submit" value="Sign In/ Log Out"/>
 </form>
 <body>
 
     <h1>Product Cataloged</h1>
     <hr>
-    <div>
+    <div class="second" sec:authorize="hasRole('ROLE_CUSTOMER')">
+      <a th:href="@{/temps/shopping-list}">cart</a>
+    </div>
+    <div class="second" sec:authorize="hasRole('ROLE_CUSTOMER')">
+        <a th:href="@{/temps/add}">Add product</a>
+    </div>
+  <!--  <div>
     <figure class="item" th:each="tempProduct : ${products}" >
         <img th:src="@{${tempProduct.pictureLocation}}">
         <a th:href="@{/temps/cart(id=${tempProduct.id})}">
         <figcaption class="caption" th:utext="${tempProduct.descrName}"/>
         </a>
     </figure>
+    </div>-->
+    <div class="test1">
+        <div class="test2" th:each="tempProduct : ${products}">
+            <div>
+                <img th:src="@{${tempProduct.pictureLocation}}"/>
+                <a th:href="@{/temps/cart(id=${tempProduct.id})}">
+                <p th:utext="${tempProduct.descrName}"/>
+                </a>
+            </div>
+        </div>
     </div>
 </body>
 </html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+
+  <title>AddForm</title>
+</head>
+<body>
+<form enctype="multipart/form-data" action="#" th:action="@{/temps/add}"
+      th:object="${product}" method="post">
+    <div class="third" sec:authorize="hasRole('ROLE_ADMIN')">
+        <!-- hidden fields -->
+        <!-- hidden fields -->
+        <input type="file" name="file" multiple="multiple" required>
+        <br>
+        <input type="text" th:field="*{productName}" placeholder="product name"
+        required>
+        <br>
+        <input type="number" th:field="*{price}" placeholder="price" required>
+        <br>
+        <input type="text" th:field="*{description}" placeholder="description" required>
+        <br>
+        <input type="number" th:field="*{quantity}" placeholder="quantity" value="0">
+        <br>
+        <button type="submit" value="Upload">Save</button>
+    </div>
+</form>
+</body>
+</html>

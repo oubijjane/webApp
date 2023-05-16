@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
   <link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>cart</title>
 </head>
 <body>
   <form enctype="multipart/form-data" action="#" th:action="@{/temps/update}"
         th:object="${product}" method="post">
-    <div class="second" sec:authorize="hasRole('ROLE_ADMIN')">
+    <div class="third" sec:authorize="hasRole('ROLE_ADMIN')">
     <img class="show-case" th:src="@{${product.pictureLocation}}">
+      <a th:href="@{/temps/delete-product}">delete</a>
+      <!-- hidden fields -->
     <input type="hidden" th:field="*{id}">
     <input type="hidden" th:field="*{pictureLocation}">
+      <!-- hidden fields -->
     <input type="file" name="file" multiple="multiple">
     <br>
     <input type="text" th:field="*{productName}">
@@ -22,9 +26,17 @@
     <br>
     <input type="number" th:field="*{quantity}">
     <br>
-      <input type="number" min="0" th:max="*{quantity}" name="quant" required/>
+      <input type="number" min="0" th:max="*{quantity}" name="quant" value="0" required/>
       <br>
     <button type="submit" value="Upload">Save</button>
+    </div>
+  </form>
+  <form action="#" th:action="@{/temps/delete-product}"
+        th:object="${product}" method="post">
+    <div class="third" sec:authorize="hasRole('ROLE_ADMIN')">
+      <!-- hidden fields -->
+      <input type="hidden" th:field="*{id}">
+      <button type="submit" >delete</button>
     </div>
   </form>
 
@@ -37,6 +49,7 @@
       <div>
         <p class="tu" th:text="*{productName} + ' ' + *{description}"/>
         <p class="tu" th:text=" 'price: ' + *{price}"/>
+        <!-- hidden fields -->
         <input type="hidden" th:field="*{id}">
         <input type="hidden" th:field="*{pictureLocation}">
         <br>
@@ -47,8 +60,9 @@
         <input type="hidden" th:field="*{description}">
         <br>
         <input type="hidden" th:field="*{quantity}">
+        <!-- hidden fields -->
         <label>quantity:
-          <input type="number" min="0" th:max="*{quantity}" name="quant" required/>
+          <input type="number" min="0" th:max="*{quantity}" name="quant" value="0" required/>
         </label>
         <br>
         <br>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+
+</head>
+<body>
+<form action="#" th:action="@{/temps/add-account}"
+      th:object="${customer}" method="post">
+
+
+        <input type="text" th:field="*{firstName}" placeholder="first name"
+               required>
+        <br>
+        <input type="text" th:field="*{lastName}" placeholder="last name"
+           required>
+        <br>
+        <input type="text" th:field="*{address}" placeholder="address" required>
+        <br>
+        <input type="text" th:field="*{email}" placeholder="email"
+           required>
+        <br>
+       <input type="password" name="password" placeholder="password" required >
+        <br>
+        <button type="submit">Save</button>
+</form>
+
+</body>
+</html>
