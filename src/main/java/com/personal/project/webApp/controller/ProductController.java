@@ -80,19 +80,28 @@ public class ProductController {
         return "products/add-form";
     }
     @PostMapping("/update")
-    public String update(@ModelAttribute("product") Product product,@RequestParam(value = "file", required = false) MultipartFile file,@RequestParam int quant) {
-        System.out.println("/->>>>>>>" + quant);
-        int quantity = product.getQuantity() - quant;
-        product.setQuantity(quantity);
-        if(file.isEmpty()){
-            productService.save(product);
-            return "redirect:/temps/list";
-        }
+    public String update(@ModelAttribute("product") Product product,
+                         @RequestParam(value = "file", required = false) MultipartFile file,
+                         @RequestParam int quant,
+                         @RequestParam("action") String action ) {
+        if(action.equals("delete")) {
+            productService.deleteById(product.getId());
 
-        String picture = product.getId() + "-" +product.getProductName() + ".jpg";
-        storageService.store(file, picture);
-        product.setPictureLocation("/images/" + picture);
-        productService.save(product);
+
+        }if(action.equals("update")) {
+            System.out.println("/->>>>>>>" + quant);
+            int quantity = product.getQuantity() - quant;
+            product.setQuantity(quantity);
+            if (file.isEmpty()) {
+                productService.save(product);
+                return "redirect:/temps/list";
+            }
+
+            String picture = product.getId() + "-" + product.getProductName() + ".jpg";
+            storageService.store(file, picture);
+            product.setPictureLocation("/images/" + picture);
+            productService.save(product);
+        }
         return "redirect:/temps/list";
     }
     @PostMapping("/add")
@@ -108,14 +117,17 @@ public class ProductController {
         return "redirect:/temps/list";
     }
     @PostMapping("/add-to-cart")
-    public String addToCart(@ModelAttribute("product") Product product, @RequestParam int quant){
-        int quantity = product.getQuantity() - quant;
-        product.setQuantity(quantity);
-        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int theId = customerService.FindCustomerByEmail(user.getUsername()).getId();
-        OrderList orderList = new OrderList(quant,customerService.FindCustomerByEmail(user.getUsername()), product);
-        productService.save(product);
-        orderListService.save(orderList);
+    public String addToCart(@ModelAttribute("product") Product product, @RequestParam int quant, @RequestParam("action") String action){
+
+            System.out.println("kkkkkkkkkkkkkk>>>>>>>>>>>>>>");
+            int quantity = product.getQuantity() - quant;
+            product.setQuantity(quantity);
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            int theId = customerService.FindCustomerByEmail(user.getUsername()).getId();
+            OrderList orderList = new OrderList(quant, customerService.FindCustomerByEmail(user.getUsername()), product);
+            productService.save(product);
+            orderListService.save(orderList);
+
         return "redirect:/temps/list";
     }
     @GetMapping("/add-account")
