@@ -1,6 +1,7 @@
 package com.personal.project.webApp.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
@@ -13,18 +14,23 @@ public class Product {
     @Column(name = "id")
     private int id;
 
+    @NotBlank
     @Column(name = "product_name")
     private  String productName;
 
+    @NotBlank
     @Column(name = "price")
     private float price;
 
+    @NotBlank
     @Column(name = "picture_location")
     private String pictureLocation;
 
+    @NotBlank
     @Column(name = "description")
     private String description;
 
+    @NotBlank
     @Column(name = "quantity")
     private int quantity;
 

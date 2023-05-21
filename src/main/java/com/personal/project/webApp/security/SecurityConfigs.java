@@ -62,8 +62,9 @@ public class SecurityConfigs {
                 "select email, password, enabled from customer where email=?"
         );
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-                "select email, role from customer where email=?"
+                "select email, role from roles where email=?"
         );
+
         return jdbcUserDetailsManager;
     }
 }

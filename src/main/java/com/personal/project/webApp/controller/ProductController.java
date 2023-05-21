@@ -1,12 +1,16 @@
 package com.personal.project.webApp.controller;
 
+import com.personal.project.webApp.EmailValid;
 import com.personal.project.webApp.entity.Customer;
 import com.personal.project.webApp.entity.OrderList;
 import com.personal.project.webApp.entity.Product;
+import com.personal.project.webApp.entity.Roles;
 import com.personal.project.webApp.service.CustomerService;
 import com.personal.project.webApp.service.OrderListService;
 import com.personal.project.webApp.service.ProductService;
+import com.personal.project.webApp.service.RolesServiceImpl;
 import com.personal.project.webApp.storage.StorageService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,9 +18,13 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.management.relation.Role;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -26,6 +34,8 @@ import java.util.List;
 @RequestMapping("/temps")
 public class ProductController {
 
+
+    private EmailValid emailValid;
     private OrderListService orderListService;
 
     private ProductService productService;
@@ -36,18 +46,29 @@ public class ProductController {
 
     private PasswordEncoder passwordEncoder;
 
+    private RolesServiceImpl rolesService;
+
+
     @Autowired
     public ProductController(
             ProductService productService,
             StorageService storageService,
             CustomerService customerService,
             OrderListService orderListService,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder,
+            EmailValid emailValid,
+            RolesServiceImpl rolesService) {
         this.productService = productService;
         this.storageService = storageService;
         this.customerService = customerService;
         this.orderListService = orderListService;
         this.passwordEncoder = passwordEncoder;
+        this.emailValid = emailValid;
+        this.rolesService = rolesService;
+    }
+    @InitBinder(value="customer")
+    protected void initBunder(WebDataBinder binder){
+        binder.setValidator(emailValid);
     }
 
     @GetMapping("/list")
@@ -134,14 +155,31 @@ public class ProductController {
     public String addAccount(Model model) {
         Customer customer = new Customer();
 
+
+
         model.addAttribute("customer", customer);
         return "products/add-account";
     }
 
     @PostMapping("/add-account")
-    public String addCustomer(@ModelAttribute("customer") Customer customer, @RequestParam String password) {
+    public String addCustomer(@ModelAttribute("customer") @Validated Customer customer, BindingResult result, @RequestParam String password) {
+
+
+        if(result.hasErrors()){
+            return "products/add-account";
+        }/*
+        for(Customer tempCustomer : customerService.findAll()){
+            if(tempCustomer.getEmail().equals(customer.getEmail())){
+                message = "email already exist";
+                this.message = message;
+                System.out.println(message);
+                return "products/add-account";
+            }
+        }*/
         customer.setPassword(passwordEncoder.encode(password));
         customerService.save(customer);
+        Roles role = new Roles(customer, "ROLE_CUSTOMER");
+        rolesService.save(role);
         return "redirect:/temps/list";
     }
 

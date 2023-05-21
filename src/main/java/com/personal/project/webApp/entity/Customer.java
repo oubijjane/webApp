@@ -1,39 +1,53 @@
 package com.personal.project.webApp.entity;
 
 import jakarta.persistence.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.constraints.NotBlank;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Customer {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank
     @Column(name="first_name")
     private String firstName;
 
+    @NotBlank
     @Column(name="last_name")
     private String lastName;
+    @NotBlank
     @Column(name="address")
     private String address;
 
+    @NotBlank
     @Column(name = "password")
     private String password;
 
-    @Column(name="email")
+    @NotBlank
+    @Column(name="email", unique = true)
     private String email;
-
-    @Column
-    private String role;
 
 
     @OneToMany(mappedBy = "customer",
             cascade = {CascadeType.MERGE, CascadeType.REMOVE})
-    List<OrderList> orderLists;
+    private List<OrderList> orderLists;
+
+    @OneToMany(mappedBy = "customer",
+            cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    private List<Roles> roles;
+
+    public List<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Roles> roles) {
+        this.roles = roles;
+    }
 
     public Customer() {
     }
@@ -43,8 +57,7 @@ public class Customer {
         this.lastName = lastName;
         this.address = address;
         this.email = email;
-        this.role = "CUSTOMER";
-        this.password = "{bcrypt}"+password;
+        this.password = password;
     }
 
     public int getId() {
@@ -92,15 +105,7 @@ public class Customer {
     }
 
     public void setPassword(String password) {
-        this.password = "{bcrypt}" + password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = "ROLE_" + role;
+        this.password = password;
     }
 
 
@@ -120,9 +125,8 @@ public class Customer {
                 ", lastName='" + lastName + '\'' +
                 ", address='" + address + '\'' +
                 ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", role='" + role + '\'' +
-                '}';
+                ", email='" + email + "}"
+                ;
     }
 }
 

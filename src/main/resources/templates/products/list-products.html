@@ -19,14 +19,6 @@
     <div class="second" sec:authorize="hasRole('ROLE_CUSTOMER')">
         <a th:href="@{/temps/add}">Add product</a>
     </div>
-  <!--  <div>
-    <figure class="item" th:each="tempProduct : ${products}" >
-        <img th:src="@{${tempProduct.pictureLocation}}">
-        <a th:href="@{/temps/cart(id=${tempProduct.id})}">
-        <figcaption class="caption" th:utext="${tempProduct.descrName}"/>
-        </a>
-    </figure>
-    </div>-->
     <div class="test1">
         <div class="test2" th:each="tempProduct : ${products}">
             <div>
