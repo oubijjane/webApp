@@ -7,9 +7,9 @@
     <title>Welcome</title>
 </head>
 <body>
-<div class="test">
+<div class="list">
   <div  th:each="tempOrderList : ${ordersList}">
-      <div class="third">
+      <div class="layout">
       <img th:src="@{${tempOrderList.getProduct.pictureLocation}}">
           <div>
       <a th:utext="${tempOrderList.getProduct.descrName}"/>
@@ -19,6 +19,6 @@
   </div>
   </div>
 </div>
-<a th:href="@{/temps/shopping-list}">Back to List</a>
+<a th:href="@{/temps/list}">Back to main menu</a>
 </body>
 </html>

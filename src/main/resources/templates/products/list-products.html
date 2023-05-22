@@ -13,14 +13,9 @@
 
     <h1>Product Cataloged</h1>
     <hr>
-    <div class="second" sec:authorize="hasRole('ROLE_CUSTOMER')">
-      <a th:href="@{/temps/shopping-list}">cart</a>
-    </div>
-    <div class="second" sec:authorize="hasRole('ROLE_CUSTOMER')">
-        <a th:href="@{/temps/add}">Add product</a>
-    </div>
-    <div class="test1">
-        <div class="test2" th:each="tempProduct : ${products}">
+    <a sec:authorize="hasRole('ROLE_ADMIN')"  th:href="@{/temps/add-product}">Add product</a>	&nbsp;<a sec:authorize="hasRole('ROLE_CUSTOMER')" th:href="@{/temps/shopping-list}">cart</a>
+    <div class="main_menu">
+        <div class="product" th:each="tempProduct : ${products}">
             <div>
                 <img th:src="@{${tempProduct.pictureLocation}}"/>
                 <a th:href="@{/temps/cart(id=${tempProduct.id})}">

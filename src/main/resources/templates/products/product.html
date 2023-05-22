@@ -9,7 +9,7 @@
 <body>
   <form enctype="multipart/form-data" action="#" th:action="@{/temps/update}"
         th:object="${product}" method="post">
-    <div class="third" sec:authorize="hasRole('ROLE_ADMIN')">
+    <div class="layout" sec:authorize="hasRole('ROLE_ADMIN')">
     <img class="show-case" th:src="@{${product.pictureLocation}}">
       <a th:href="@{/temps/delete-product}">delete</a>
       <!-- hidden fields -->
@@ -35,8 +35,8 @@
 
   <form action="#" th:action="@{/temps/add-to-cart}"
         th:object="${product}" method="post">
-    <div class="third">
-      <div class="what">
+    <div class="layout">
+      <div class="line">
         <img class="show-case" th:src="@{*{pictureLocation}}" alt="product">
       </div>
       <div>
@@ -65,6 +65,6 @@
   </form>
       <br>
       <hr>
-      <a th:href="@{/temps/list}">Back to List</a>
+      <a th:href="@{/temps/list}">Back to main menu</a>
 </body>
 </html>

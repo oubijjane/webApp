@@ -67,7 +67,7 @@ public class ProductController {
         this.rolesService = rolesService;
     }
     @InitBinder(value="customer")
-    protected void initBunder(WebDataBinder binder){
+    protected void initBinder(WebDataBinder binder){
         binder.setValidator(emailValid);
     }
 
@@ -106,11 +106,12 @@ public class ProductController {
                          @RequestParam int quant,
                          @RequestParam("action") String action ) {
         if(action.equals("delete")) {
+            String picture = product.getId() + "-" + product.getProductName() + ".jpg";
+            storageService.delete(picture);
             productService.deleteById(product.getId());
 
 
         }if(action.equals("update")) {
-            System.out.println("/->>>>>>>" + quant);
             int quantity = product.getQuantity() - quant;
             product.setQuantity(quantity);
             if (file.isEmpty()) {
@@ -126,8 +127,13 @@ public class ProductController {
         return "redirect:/temps/list";
     }
     @PostMapping("/add")
-    public String add(@ModelAttribute("product") Product product) {
+    public String add(@ModelAttribute("product") Product product,
+                      @RequestParam(value = "file", required = false) MultipartFile file) {
 
+        productService.save(product);
+        String picture = product.getId() + "-" + product.getProductName() + ".jpg";
+        storageService.store(file, picture);
+        product.setPictureLocation("/images/" + picture);
         productService.save(product);
         return "redirect:/temps/list";
     }
@@ -138,9 +144,8 @@ public class ProductController {
         return "redirect:/temps/list";
     }
     @PostMapping("/add-to-cart")
-    public String addToCart(@ModelAttribute("product") Product product, @RequestParam int quant, @RequestParam("action") String action){
+    public String addToCart(@ModelAttribute("product") Product product, @RequestParam int quant){
 
-            System.out.println("kkkkkkkkkkkkkk>>>>>>>>>>>>>>");
             int quantity = product.getQuantity() - quant;
             product.setQuantity(quantity);
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -167,15 +172,7 @@ public class ProductController {
 
         if(result.hasErrors()){
             return "products/add-account";
-        }/*
-        for(Customer tempCustomer : customerService.findAll()){
-            if(tempCustomer.getEmail().equals(customer.getEmail())){
-                message = "email already exist";
-                this.message = message;
-                System.out.println(message);
-                return "products/add-account";
-            }
-        }*/
+        }
         customer.setPassword(passwordEncoder.encode(password));
         customerService.save(customer);
         Roles role = new Roles(customer, "ROLE_CUSTOMER");

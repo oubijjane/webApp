@@ -1,3 +1,6 @@
+body {
+    background-color: rgba(0, 0, 155, 0.2);
+  }
 h1 {
     font-family: "Strong";
     text-align: center;
@@ -11,37 +14,21 @@ div{
     max-width: 1000px;
 }
 
-.grid {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: left;
-    gap: 16px;
-    margin: 0;
-    padding: 20px 10px;
-}
 p {
     display: block;
 }
-figure.item {
-    /* To correctly align image, regardless of content height: */
-    vertical-align: 20%;
-    display: inline-block;
-    /* To horizontally center images and caption */
-    text-align: center;
-    /* The width of the container also implies margin around the images. */
-    width: 120px;
-}
+
 img {
     width: 150px;
     height: 150px;
 }
-.caption {
-    /* Make the caption a block so it occupies its own line. */
-    display: block;
+.login-menu{
+    margin-left: 35%;
+    border: 2px solid;
+    background-color: rgba(0, 0, 155, 0.2);
+    width: fit-content;
 }
-.second {
+.link {
     margin-left: 0px;
     padding-left: 0px
 }
@@ -49,7 +36,7 @@ img {
     width: 300px;
     height: 300px;
 }
-.third{
+.layout{
      display: grid;
      justify-content: start;
      grid-template-columns: 1fr 1fr;
@@ -60,7 +47,7 @@ img {
      background-color: rgba(0, 0, 155, 0.2);
      border: 2px solid;
 }
-.test{
+.list{
   display: grid;
   grid-template-columns: auto;
   padding: 10px;
@@ -68,14 +55,14 @@ img {
 
 
 
-.what{
+.line{
     border-right: 2px solid black;
 }
 input {
     position: relative;
 }
 
-.test1{
+.main_menu{
     display: grid;
       grid-template-columns: auto auto auto;
       padding:10px;
@@ -84,7 +71,7 @@ input {
       margin: auto;
 }
 
-.test2{
+.product{
     background-color: rgba(0, 0, 155, 0.2);
       border: 1px solid black;
       padding: 20px;
@@ -94,9 +81,27 @@ input {
       text-align: center;
       border-radius: 10px;
 }
-.test3{
-    text-align: center;
-}
+a:link {
+    text-decoration: none;
+    color: black;
+    }
+
+a:visited {
+    text-decoration: none;
+    color: black;
+    }
+
+a:hover {
+    text-decoration: none;
+    color: black;
+    }
+
+
+a:active {
+    text-decoration: none;
+    color: black;
+    }
+
 
 
 

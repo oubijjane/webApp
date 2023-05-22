@@ -11,7 +11,7 @@
 <body>
 <form enctype="multipart/form-data" action="#" th:action="@{/temps/add}"
       th:object="${product}" method="post">
-    <div class="third" sec:authorize="hasRole('ROLE_ADMIN')">
+    <div class="layout" sec:authorize="hasRole('ROLE_ADMIN')">
         <!-- hidden fields -->
         <!-- hidden fields -->
         <input type="file" name="file" multiple="multiple" required>
