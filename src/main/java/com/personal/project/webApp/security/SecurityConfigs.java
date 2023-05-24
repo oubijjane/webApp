@@ -4,13 +4,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
 import java.security.Security;
+
+import static org.springframework.security.authorization.AuthorityReactiveAuthorizationManager.hasRole;
 
 @Configuration
 @EnableWebSecurity
@@ -41,14 +45,20 @@ public class SecurityConfigs {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(config ->
                 config
-                        .requestMatchers("/temps/list","/images/**","/css/**","/temps/cart/**","/**","/temps/add-to-cart","/temps/add-account")
+                        .requestMatchers("/images/**","/css/**","/temps/cart/**","/temps/add-to-cart","/temps/add-account","/temps/list")
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET,"/temps/cart/**").hasRole("CUSTOMER")
-                        .requestMatchers(HttpMethod.POST,"/temps/update","/temps/list","/images/**","/css/**","/temps/cart/**","/**","/temps/add-to-cart","temps/shopping-list", "temps/Add-product", "temps/delete-product").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/temps/cart/**").hasRole("ROLE_CUSTOMER")
+                        .requestMatchers(HttpMethod.POST,"/temps/update",
+                                "/temps/list","/images/**",
+                                "/css/**",
+                                "/temps/cart/**",
+                                "/**",
+                                "/temps/**","/temps/accounts").hasAuthority("ROLE_ADMIN")
+
 
         ).formLogin((form) -> form
-                .loginPage("/login")
-                .permitAll())
+                        .loginPage("/login")
+                        .permitAll())
                 .logout((logout)->logout.permitAll());
         httpSecurity.httpBasic();
         return httpSecurity.build();
@@ -67,4 +77,5 @@ public class SecurityConfigs {
 
         return jdbcUserDetailsManager;
     }
+
 }

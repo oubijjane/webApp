@@ -13,4 +13,6 @@ public interface RolesService {
     Roles save(Roles role);
 
     void deleteById(int id);
+
+    List<Roles> findByEmail(String email);
 }

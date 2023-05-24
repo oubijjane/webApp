@@ -1,6 +1,7 @@
 package com.personal.project.webApp.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class Customer {
     @Column(name = "password")
     private String password;
 
+    @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     @NotBlank
     @Column(name="email", unique = true)
     private String email;

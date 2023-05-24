@@ -79,6 +79,13 @@ public class ProductController {
 
         return "products/list-products";
     }
+    @GetMapping("/accounts")
+    public String customers(Model model){
+        List<Customer> customers = customerService.findAll();
+
+        model.addAttribute("accounts", customers);
+        return "products/list-customers";
+    }
     @GetMapping("/cart")
     public String cart(@RequestParam(value = "id") int id, Model theModel) {
         Product product = productService.findById(id);
@@ -180,4 +187,15 @@ public class ProductController {
         return "redirect:/temps/list";
     }
 
+    @GetMapping("/add-authority")
+    public String addAuthority(@RequestParam("accountId") int accountId) {
+        Customer customer = customerService.findById(accountId);
+        for(Roles role : rolesService.findByEmail(customer.getEmail())) {
+            if(role.getRole().equals("ROLE_ADMIN")){
+                return "redirect:/temps/accounts";
+            }
+        }
+        rolesService.save(new Roles(customer,"ROLE_ADMIN"));
+        return "redirect:/temps/accounts";
+    }
 }

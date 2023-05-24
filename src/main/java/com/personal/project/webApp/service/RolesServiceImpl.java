@@ -48,4 +48,10 @@ public class RolesServiceImpl implements RolesService{
         rolesDAO.deleteById(id);
 
     }
+
+    @Override
+    public List<Roles> findByEmail(String email) {
+
+        return rolesDAO.findByEmail(email);
+    }
 }
