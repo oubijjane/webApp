@@ -145,11 +145,6 @@ public class ProductController {
         return "redirect:/temps/list";
     }
 
-    @PostMapping("/delete-product")
-    public String deleteProduct(@ModelAttribute("product") Product product) {
-        productService.deleteById(product.getId());
-        return "redirect:/temps/list";
-    }
     @PostMapping("/add-to-cart")
     public String addToCart(@ModelAttribute("product") Product product, @RequestParam int quant){
 

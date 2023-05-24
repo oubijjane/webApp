@@ -45,15 +45,11 @@ public class SecurityConfigs {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(config ->
                 config
-                        .requestMatchers("/images/**","/css/**","/temps/cart/**","/temps/add-to-cart","/temps/add-account","/temps/list")
+                        .requestMatchers("/images/**","/css/**","/temps/cart/**","/temps/add-to-cart","/temps/add-account","/temps/list","/","index.html")
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET,"/temps/cart/**").hasRole("ROLE_CUSTOMER")
-                        .requestMatchers(HttpMethod.POST,"/temps/update",
-                                "/temps/list","/images/**",
-                                "/css/**",
-                                "/temps/cart/**",
-                                "/**",
-                                "/temps/**","/temps/accounts").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/temps/cart/**","/temps/shopping-list","/","index.html").hasRole("CUSTOMER")
+                        .requestMatchers("/temps/update","/**","/","/temps/accounts","/temps/add-product","/temps/add").hasRole("ADMIN")
+
 
 
         ).formLogin((form) -> form

@@ -11,7 +11,6 @@
         th:object="${product}" method="post">
     <div class="layout" sec:authorize="hasRole('ROLE_ADMIN')">
     <img class="show-case" th:src="@{${product.pictureLocation}}">
-      <a th:href="@{/temps/delete-product}">delete</a>
       <!-- hidden fields -->
     <input type="hidden" th:field="*{id}">
     <input type="hidden" th:field="*{pictureLocation}">
@@ -20,15 +19,16 @@
     <br>
     <input type="text" th:field="*{productName}">
     <br>
-    <input type="text" th:field="*{price}">
+    <input type="number" min="0" step="0.01" th:field="*{price}">
     <br>
     <input type="text" th:field="*{description}">
     <br>
-    <input type="number" th:field="*{quantity}">
+    <input type="number" min="0" th:field="*{quantity}">
     <br>
       <input type="number" min="0" th:max="*{quantity}" name="quant" value="0" required/>
       <br>
     <button type="submit" name="action" value="update">Save</button>
+      <p></p>
      <button type="submit" name="action" value="delete">Delete</button>
     </div>
   </form>
@@ -55,7 +55,7 @@
         <input type="hidden" th:field="*{quantity}">
         <!-- hidden fields -->
         <label>quantity:
-          <input type="number" min="0" th:max="*{quantity}" name="quant" value="0" required/>
+          <input type="number" min="0.0" th:max="*{quantity}" name="quant" value="0" required/>
         </label>
         <br>
         <br>

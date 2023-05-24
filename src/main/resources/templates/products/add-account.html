@@ -8,6 +8,7 @@
 
 </head>
 <body>
+<div class="login-menu">
 <form action="#" th:action="@{/temps/add-account}"
       th:object="${customer}" method="post">
 
@@ -20,7 +21,7 @@
         <br>
         <input type="text" th:field="*{address}" placeholder="address" required>
         <br>
-        <input type="text" th:field="*{email}" placeholder="email"
+        <input type="email" th:field="*{email}" placeholder="email"
            required>
         <lable th:if="${#fields.hasErrors('email')}" th:errors="*{email}"/>
         <br>
@@ -28,6 +29,6 @@
         <br>
         <button type="submit">Save</button>
 </form>
-
+</div>
 </body>
 </html>
