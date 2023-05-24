@@ -46,6 +46,7 @@ public class ProductController {
 
     private PasswordEncoder passwordEncoder;
 
+
     private RolesServiceImpl rolesService;
 
 
@@ -62,9 +63,9 @@ public class ProductController {
         this.storageService = storageService;
         this.customerService = customerService;
         this.orderListService = orderListService;
-        this.passwordEncoder = passwordEncoder;
         this.emailValid = emailValid;
         this.rolesService = rolesService;
+        this.passwordEncoder = passwordEncoder;
     }
     @InitBinder(value="customer")
     protected void initBinder(WebDataBinder binder){
@@ -175,7 +176,8 @@ public class ProductController {
         if(result.hasErrors()){
             return "products/add-account";
         }
-        customer.setPassword(passwordEncoder.encode(password));
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        customer.setEnabled(1);
         customerService.save(customer);
         Roles role = new Roles(customer, "ROLE_CUSTOMER");
         rolesService.save(role);

@@ -29,7 +29,7 @@ public class Customer {
     @Column(name = "password")
     private String password;
 
-    @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
+    @Email(message = "Email is not valid")
     @NotBlank
     @Column(name="email", unique = true)
     private String email;
@@ -47,6 +47,9 @@ public class Customer {
         return roles;
     }
 
+    @Column
+    private int enabled;
+
     public void setRoles(List<Roles> roles) {
         this.roles = roles;
     }
@@ -60,6 +63,7 @@ public class Customer {
         this.address = address;
         this.email = email;
         this.password = password;
+        this.enabled = 1;
     }
 
     public int getId() {
@@ -117,6 +121,14 @@ public class Customer {
 
     public void setOrders(List<OrderList> orderLists) {
         this.orderLists = orderLists;
+    }
+
+    public int getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
     }
 
     @Override
