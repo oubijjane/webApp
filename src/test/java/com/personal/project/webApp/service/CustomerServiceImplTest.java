@@ -69,7 +69,7 @@ class CustomerServiceImplTest {
         assertThat(byId).isEqualTo(customerDAO.findById(customer.getId()).get());
     }
     @Test
-    void Check_intById_if_the_id_does_not_exist() {
+    void Check_findById_if_the_id_does_not_exist() {
         //given
         int id = 0;
 
