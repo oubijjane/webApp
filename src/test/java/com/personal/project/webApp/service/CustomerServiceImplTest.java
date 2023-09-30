@@ -65,7 +65,7 @@ class CustomerServiceImplTest {
 
         //then
         verify(customerDAO).findById(customer.getId());
-        assertThat(customerDAO.findById(customer.getId()).isPresent());
+        assertThat(customerDAO.findById(customer.getId()).isPresent()).isTrue();
         assertThat(byId).isEqualTo(customerDAO.findById(customer.getId()).get());
     }
     @Test
@@ -181,6 +181,7 @@ class CustomerServiceImplTest {
         List<OrderList> result = underTest.getOrders(customer.getId());
 
         verify(customerDAO, times(2)).findById(customer.getId());
+        assertThat(customerDAO.findById(customer.getId()).isPresent()).isTrue();
         assertThat(result.size()).isEqualTo(2);
     }
 
