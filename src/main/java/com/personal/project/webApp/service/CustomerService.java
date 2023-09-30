@@ -20,7 +20,7 @@ public interface CustomerService {
 
     List<OrderList> getOrders(int id);
 
-    List<Customer> findByEmail(String email);
+    Customer findByEmail(String email);
 
 
    Customer FindCustomerByEmail(String email);

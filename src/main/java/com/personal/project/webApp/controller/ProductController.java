@@ -96,7 +96,8 @@ public class ProductController {
     @GetMapping("/shopping-list")
     public String order(Model theModel) {
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int theId = customerService.FindCustomerByEmail(user.getUsername()).getId();
+        int theId = customerService.
+                FindCustomerByEmail(user.getUsername()).getId();
         List<OrderList> ordersList = customerService.getOrders(theId);
         theModel.addAttribute("ordersList", ordersList);
         return "products/shopping-list";

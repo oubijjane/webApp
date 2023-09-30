@@ -8,8 +8,7 @@ import java.util.List;
 
 public interface CustomerDAO extends JpaRepository<Customer, Integer>{
 
-    List<Customer> findByEmail(String email);
-    //List<Product> getProducts(int id);
+    //List<Customer> findByEmail(String email);
 
-    //void addToCart(int id, Product product);
+    Customer findByEmail(String email);
 }

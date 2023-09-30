@@ -19,11 +19,7 @@ public class EmailValid implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Customer customer = (Customer) target;
-        /*for(Customer customer1 : customerService.findAll()) {
-            if(customer1.getEmail().equals(customer.getEmail())){
-                errors.rejectValue("email", "customer.email","email already exist");
-            }
-        }*/
+
         if(customerService.FindCustomerByEmail(customer.getEmail())!=null){
             errors.rejectValue("email", "customer.email","email already exist");
         }
