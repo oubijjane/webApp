@@ -73,8 +73,9 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     @Transactional
     public List<OrderList> getOrders(int id) {
-        Hibernate.initialize(findById(id).getOrders());
-        return findById(id).getOrders();
+        List<OrderList> orderLists = findById(id).getOrders();
+        Hibernate.initialize(orderLists);
+        return orderLists;
     }
 
 }

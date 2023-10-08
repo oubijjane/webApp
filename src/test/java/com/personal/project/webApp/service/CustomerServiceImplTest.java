@@ -49,7 +49,7 @@ class CustomerServiceImplTest {
     }
 
     @Test
-    void Check_indById_if_the_id_exist() {
+    void Check_findById_if_the_id_exist() {
 
         //given
         Customer customer = new Customer(
@@ -143,6 +143,7 @@ class CustomerServiceImplTest {
 
     @Test
     void findCustomerByEmail() {
+        //given
         Customer customer = new Customer(
                 "zakaria",
                 "oubijjane",
@@ -175,12 +176,13 @@ class CustomerServiceImplTest {
         orderLists.add(new OrderList());
         orderLists.add(new OrderList());
 
-
+        //when
         customer.setOrders(orderLists);
         when(this.customerDAO.findById(customer.getId())).thenReturn(Optional.of(customer));
         List<OrderList> result = underTest.getOrders(customer.getId());
 
-        verify(customerDAO, times(2)).findById(customer.getId());
+        //then
+        verify(customerDAO).findById(customer.getId());
         assertThat(customerDAO.findById(customer.getId()).isPresent()).isTrue();
         assertThat(result.size()).isEqualTo(2);
     }
