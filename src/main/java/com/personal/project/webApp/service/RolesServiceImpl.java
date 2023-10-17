@@ -33,7 +33,7 @@ public class RolesServiceImpl implements RolesService{
         }
         else {
             // we didn't find the employee
-            throw new RuntimeException("Did not find product id - " + id);
+            throw new RuntimeException("Did not find role id - " + id);
         }
         return role;
     }
