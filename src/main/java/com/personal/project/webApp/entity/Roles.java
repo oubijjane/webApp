@@ -46,7 +46,7 @@ public class Roles {
         return customer;
     }
 
-    public void setCustomerList(Customer customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
