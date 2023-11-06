@@ -19,27 +19,6 @@ import static org.springframework.security.authorization.AuthorityReactiveAuthor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigs {
-/*
-    @Bean
-    public InMemoryUserDetailsManager userDetailsManager() {
-        UserDetails zakaria = User.builder()
-                .username("zakaria")
-                .password("{noop}admin")
-                .roles("CUSTOMER","MANAGER","ADMIN")
-                .build();
-        UserDetails user1 = User.builder()
-                .username("user1")
-                .password("{noop}user1")
-                .roles("CUSTOMER")
-                .build();
-        UserDetails user2 = User.builder()
-                .username("user2")
-                .password("{noop}user2")
-                .roles("COSTUMER","CUSTOMER")
-                .build();
-
-        return new InMemoryUserDetailsManager(zakaria,user1,user2);
-    }*/
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {

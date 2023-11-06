@@ -16,6 +16,7 @@ import org.springframework.boot.Banner;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -160,11 +161,11 @@ public class ProductController {
 
         return "redirect:/temps/list";
     }
+
+
     @GetMapping("/add-account")
     public String addAccount(Model model) {
         Customer customer = new Customer();
-
-
 
         model.addAttribute("customer", customer);
         return "products/add-account";
