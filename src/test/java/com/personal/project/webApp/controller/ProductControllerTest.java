@@ -1,7 +1,9 @@
 package com.personal.project.webApp.controller;
 
 import com.personal.project.webApp.EmailValid;
+import com.personal.project.webApp.dao.CustomerDAO;
 import com.personal.project.webApp.entity.Customer;
+import com.personal.project.webApp.entity.OrderList;
 import com.personal.project.webApp.entity.Product;
 import com.personal.project.webApp.security.SecurityConfigs;
 import com.personal.project.webApp.service.CustomerService;
@@ -10,38 +12,46 @@ import com.personal.project.webApp.service.ProductService;
 import com.personal.project.webApp.service.RolesServiceImpl;
 import com.personal.project.webApp.storage.StorageService;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @WebMvcTest(controllers = ProductController.class)
 @Import({ProductController.class, SecurityConfigs.class})
+@ExtendWith(MockitoExtension.class)
 //@ContextConfiguration(classes = SecurityConfigs.class)
 class ProductControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Mock
+    private CustomerDAO customerDAO;
 
     @MockBean
     private DataSource dataSource;
@@ -61,8 +71,11 @@ class ProductControllerTest {
     @MockBean
     private RolesServiceImpl rolesService;
 
-    @AfterEach
-    void tearDown() {
+    private Customer customer;
+
+    @BeforeEach
+    void setUp() {
+
     }
 
     @Test
@@ -72,20 +85,14 @@ class ProductControllerTest {
     @Test
     //@WithMockUser(username = "user2@gmail.com", roles = "CUSTOMER")
     void listProducts() throws Exception {
-        List<Product> products = new ArrayList<>();
-        products.add(new Product());
-        when(productService.findAll()).thenReturn(products);
-
         this.mockMvc.perform(get("/temps/list")).andExpect(status().isOk())
                 .andExpect(view().name("products/list-products"));
+        verify(productService).findAll();
+
     }
 
     @Test
     void customers_IsUnauthorized() throws Exception {
-
-        List<Customer> customers = new ArrayList<>();
-        customers.add(new Customer());
-
         this.mockMvc.perform(get("/temps/accounts")).andExpect(status().isUnauthorized());
     }
 
@@ -93,26 +100,70 @@ class ProductControllerTest {
     @WithMockUser(username = "user2@gmail.com", roles = "ADMIN")
     void customers_Authorized() throws Exception {
 
+        this.mockMvc.perform(get("/temps/accounts")).andExpect(status().isOk())
+                .andExpect(view().name("products/list-customers"));
+        verify(customerService).findAll();
+
+    }
+    @Test
+    @WithMockUser(username = "user2@gmail.com", roles = "CUSTOMER")
+    void customers_Forbidden() throws Exception {
+
         List<Customer> customers = new ArrayList<>();
         customers.add(new Customer());
 
-        this.mockMvc.perform(get("/temps/accounts")).andExpect(status().isOk());
+        this.mockMvc.perform(get("/temps/accounts")).andExpect(status().isForbidden());
     }
 
     @Test
-    void cart() {
+    void cart() throws Exception {
+        when(productService.findById(1)).thenReturn(new Product());
+        this.mockMvc.perform(get("/temps/cart?id=1")).andExpect(status().isOk())
+                .andExpect(view().name("products/product"));
+        verify(productService).findById(1);
+
+
     }
 
     @Test
-    void order() {
+    void order_Unauthorized() throws Exception{
+        this.mockMvc.perform(get("/temps/shopping-list")).andExpect(status().isUnauthorized());
     }
 
     @Test
-    void addProduct() {
+    @WithMockUser(username = "test@gmail.com", roles = "CUSTOMER")
+    void order_Authorized() throws Exception{
+        when(customerService.FindCustomerByEmail("test@gmail.com")).thenReturn(new Customer());
+        this.mockMvc.perform(get("/temps/shopping-list")).andExpect(status().isOk())
+                .andExpect(view().name("products/shopping-list"));
+        verify(customerService).FindCustomerByEmail("test@gmail.com");
+        verify(customerService).getOrders(0);
     }
 
     @Test
-    void update() {
+    @WithMockUser(username = "test@gmail.com", roles = "CUSTOMER")
+    void addProduct_Forbidden () throws Exception {
+        this.mockMvc.perform(get("/temps/add-product")).andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "test@gmail.com", roles = "ADMIN")
+    void addProduct_Authorized () throws Exception {
+        this.mockMvc.perform(get("/temps/add-product")).andExpect(status().isOk())
+                .andExpect(model().attribute("product", new Product()))
+                .andExpect(view().name("products/add-form"));
+    }
+
+    @Test
+    @WithMockUser(username = "test@gmail.com", roles = "ADMIN")
+    void update_Delete() throws Exception {
+        Product product = new Product();
+
+        this.mockMvc.perform(post("/temps/update").param("quant", "1").param("action", "delete").requestAttr("product", product).with(csrf()))
+                .andExpect(redirectedUrl("/temps/list")).andExpect(status().isFound());
+
+        verify(storageService).delete(anyString());
+        verify(productService).deleteById(product.getId());
     }
 
     @Test

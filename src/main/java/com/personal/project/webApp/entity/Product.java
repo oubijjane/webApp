@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "product")
@@ -123,5 +124,18 @@ public class Product {
                 ", pictureLocation='" + pictureLocation + '\'' +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id && Float.compare(product.price, price) == 0 && quantity == product.quantity && Objects.equals(productName, product.productName) && Objects.equals(pictureLocation, product.pictureLocation) && Objects.equals(description, product.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, productName, price, pictureLocation, description, quantity);
     }
 }

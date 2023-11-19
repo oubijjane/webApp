@@ -35,17 +35,4 @@ public class WebAppApplication {
 		return new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2B);
 	}
 
-	@Bean
-	public CommandLineRunner commandLineRunner(CustomerService customerService, RolesService rolesService, PasswordEncoder passwordEncoder){
-
-		return runner ->{
-			saveCUstomer(customerService, rolesService,passwordEncoder);
-		};
-	}
-
-	private void saveCUstomer(CustomerService customerService, RolesService rolesService, PasswordEncoder passwordEncoder) {
-
-		//customerService.save(new Customer("admin","user1", "casablanca", "admin@gamil.com","admin123"));
-	}
-
 }

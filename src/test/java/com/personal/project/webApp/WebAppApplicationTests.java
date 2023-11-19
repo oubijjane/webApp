@@ -12,8 +12,5 @@ import org.springframework.test.context.ContextConfiguration;
 @AutoConfigureMockMvc
 class WebAppApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
 
 }

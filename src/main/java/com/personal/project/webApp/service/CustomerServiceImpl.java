@@ -60,7 +60,16 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public Customer findByEmail(String email) {
-        return customerDAO.findByEmail(email);
+        Optional<Customer> result = Optional.ofNullable(customerDAO.findByEmail(email));
+        Customer customer = null;
+        if (result.isPresent()) {
+            customer = result.get();
+        }
+        else {
+            // we didn't find the employee
+            throw new RuntimeException("Did not find customer id - " + email);
+        }
+        return customer;
     }
 
 
