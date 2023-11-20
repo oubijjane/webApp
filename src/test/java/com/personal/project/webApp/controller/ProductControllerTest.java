@@ -23,6 +23,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,8 +33,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.DataSource;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -164,6 +169,17 @@ class ProductControllerTest {
 
         verify(storageService).delete(anyString());
         verify(productService).deleteById(product.getId());
+    }
+
+    @Test
+    @WithMockUser(username = "test@gmail.com", roles = "ADMIN")
+    void update_Update() throws Exception {
+        Product product = new Product();
+        MockMultipartFile file = new MockMultipartFile("file", "hello.jpg", MediaType.IMAGE_JPEG_VALUE, "hello word!".getBytes());
+
+        this.mockMvc.perform(multipart("/temps/update").file(file).param("quant", "1").param("action", "update").requestAttr("product", product).with(csrf()))
+                .andExpect(redirectedUrl("/temps/list")).andExpect(status().isFound());
+        verify(productService).save(any(Product.class));
     }
 
     @Test
