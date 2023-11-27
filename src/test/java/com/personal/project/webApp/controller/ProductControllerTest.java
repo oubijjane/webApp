@@ -177,9 +177,9 @@ class ProductControllerTest {
         Product product = new Product();
         MockMultipartFile file = new MockMultipartFile("file", "hello.jpg", MediaType.IMAGE_JPEG_VALUE, "hello word!".getBytes());
 
-        this.mockMvc.perform(multipart("/temps/update").file(file).param("quant", "1").param("action", "update").requestAttr("product", product).with(csrf()))
+        this.mockMvc.perform(multipart("/temps/update").file(file).param("quant", "1").param("action", "update").flashAttr("product", product).with(csrf()))
                 .andExpect(redirectedUrl("/temps/list")).andExpect(status().isFound());
-        verify(productService).save(any(Product.class));
+        verify(productService).save(product);
     }
 
     @Test
