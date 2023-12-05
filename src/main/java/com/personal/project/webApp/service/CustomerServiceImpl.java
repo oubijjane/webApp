@@ -67,7 +67,7 @@ public class CustomerServiceImpl implements CustomerService{
         }
         else {
             // we didn't find the employee
-            throw new RuntimeException("Did not find customer id - " + email);
+            throw new RuntimeException("Did not find customer email - " + email);
         }
         return customer;
     }
