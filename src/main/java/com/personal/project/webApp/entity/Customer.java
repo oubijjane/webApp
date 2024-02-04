@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Customer {
@@ -141,6 +142,19 @@ public class Customer {
                 ", password='" + password + '\'' +
                 ", email='" + email + "}"
                 ;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return id == customer.id && enabled == customer.enabled && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(address, customer.address) && Objects.equals(password, customer.password) && Objects.equals(email, customer.email) && Objects.equals(orderLists, customer.orderLists) && Objects.equals(roles, customer.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, address, password, email, orderLists, roles, enabled);
     }
 }
 

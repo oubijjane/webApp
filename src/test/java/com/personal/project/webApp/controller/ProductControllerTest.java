@@ -77,7 +77,11 @@ class ProductControllerTest {
     @MockBean
     private RolesServiceImpl rolesService;
 
-    private Customer customer;
+    @MockBean
+    private Model model;
+
+
+
 
     @BeforeEach
     void setUp() {
@@ -215,15 +219,51 @@ class ProductControllerTest {
     }
 
     @Test
-    void addToCart() {
+    @WithMockUser(username = "test@gmail.com", roles = "CUSTOMER")
+    void addToCart() throws Exception {
+        Product product = new Product("milk", 2, "null", "500ml whole milk"
+                , 10);
+        Customer customer = new Customer();
+        when(customerService.FindCustomerByEmail("test@gmail.com")).thenReturn(customer);
+        mockMvc.perform(post("/temps/add-to-cart").flashAttr("product", product)
+                .param("quant", "3").with(csrf())).andExpect(redirectedUrl("/temps/list"))
+                .andExpect(status().isFound());
+        assertThat(product.getQuantity()).isEqualTo(7);
+        OrderList orderList = new OrderList(3, customer, product);
+        verify(productService).save(product);
+        verify(orderListService).save(orderList);
+
     }
 
     @Test
-    void addAccount() {
+    void addToCart_Forbidden() throws Exception {
+        Product product = new Product("milk", 2, "null", "500ml whole milk"
+                , 10);
+
+        mockMvc.perform(post("/temps/add-to-cart").flashAttr("product", product)
+                        .param("quant", "3")).andExpect(status().isForbidden());
     }
 
     @Test
-    void addCustomer() {
+    //
+    void addAccount() throws Exception {
+
+        Customer customer = new Customer();
+        System.out.println(customer);
+
+        when(emailValid.supports(any())).thenReturn(true);
+        mockMvc.perform(get("/temps/add-account")).andExpect(view()
+                .name("products/add-account")).andExpect(status().isOk()).andExpect(model()
+                .attribute("customer", customer));
+    }
+
+    @Test
+    void addCustomer() throws Exception {
+        Customer customer = new Customer("zakaria","oubijjane","casablanca"
+                ,"test12355@gmail.com","test");
+        //403 error forbidden
+        mockMvc.perform(post("/temps/add-account").flashAttr("customer",customer)
+                        .param("password", "test")).andExpect(status().isOk());
     }
 
     @Test

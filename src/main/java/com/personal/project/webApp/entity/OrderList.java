@@ -2,6 +2,8 @@ package com.personal.project.webApp.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 public class OrderList {
     @Id
@@ -67,5 +69,28 @@ public class OrderList {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderList orderList = (OrderList) o;
+        return id == orderList.id && quantity == orderList.quantity && Objects.equals(customer, orderList.customer) && Objects.equals(product, orderList.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, quantity, customer, product);
+    }
+
+    @Override
+    public String toString() {
+        return "OrderList{" +
+                "id=" + id +
+                ", quantity=" + quantity +
+                ", customer=" + customer +
+                ", product=" + product +
+                '}';
     }
 }

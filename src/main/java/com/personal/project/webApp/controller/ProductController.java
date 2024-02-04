@@ -156,8 +156,9 @@ public class ProductController {
             int quantity = product.getQuantity() - quant;
             product.setQuantity(quantity);
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            int theId = customerService.FindCustomerByEmail(user.getUsername()).getId();
-            OrderList orderList = new OrderList(quant, customerService.FindCustomerByEmail(user.getUsername()), product);
+            Customer customer = customerService.FindCustomerByEmail(user.getUsername());
+            int theId = customer.getId();
+            OrderList orderList = new OrderList(quant, customer, product);
             productService.save(product);
             orderListService.save(orderList);
 
