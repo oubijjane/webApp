@@ -261,9 +261,11 @@ class ProductControllerTest {
     void addCustomer() throws Exception {
         Customer customer = new Customer("zakaria","oubijjane","casablanca"
                 ,"test12355@gmail.com","test");
-        //403 error forbidden
+        when(emailValid.supports(any())).thenReturn(true);
         mockMvc.perform(post("/temps/add-account").flashAttr("customer",customer)
-                        .param("password", "test")).andExpect(status().isOk());
+                        .param("password", "test").with(csrf())).andExpect(status().is3xxRedirection());
+
+        verify(customerService).save(customer);
     }
 
     @Test
